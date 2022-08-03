@@ -107,7 +107,7 @@ namespace OSCTools.OSCmooth.Util
             AnimationCurve _curve1 = new AnimationCurve(new Keyframe(0.0f, initThreshold));
             AnimationCurve _curve2 = new AnimationCurve(new Keyframe(0.0f, finalThreshold));
 
-            var pName = CVRProps.CVRPrefix +(driveBase ? paramName : paramName + proxySuffix);
+            var pName = driveBase ? paramName : CVRProps.CVRPrefix + paramName + proxySuffix;
 
             _animationClip1.SetCurve("", typeof(Animator), pName, _curve1);
             _animationClip2.SetCurve("", typeof(Animator), pName, _curve2);
@@ -162,7 +162,7 @@ namespace OSCTools.OSCmooth.Util
             {
                 blendType = BlendTreeType.Simple1D,
                 hideFlags = HideFlags.HideInHierarchy,
-                blendParameter = paramName + smoothnessSuffix,
+                blendParameter = CVRProps.CVRPrefix + paramName + smoothnessSuffix,
                 name = CVRProps.CVRPrefix + "OSCm_" + paramName + " Root",
                 useAutomaticThresholds = false
             };
@@ -170,7 +170,7 @@ namespace OSCTools.OSCmooth.Util
             {
                 blendType = BlendTreeType.Simple1D,
                 hideFlags = HideFlags.HideInHierarchy,
-                blendParameter = driveBase ? paramName + proxySuffix : paramName,
+                blendParameter = driveBase ? CVRProps.CVRPrefix + paramName + proxySuffix : paramName,
                 name = $"{CVRProps.CVRPrefix}OSCm_ProxyBlend",
                 useAutomaticThresholds = false
             }; ;
@@ -178,7 +178,7 @@ namespace OSCTools.OSCmooth.Util
             {
                 blendType = BlendTreeType.Simple1D,
                 hideFlags = HideFlags.HideInHierarchy,
-                blendParameter = driveBase ? paramName: paramName + proxySuffix,
+                blendParameter = driveBase ? paramName : CVRProps.CVRPrefix + paramName + proxySuffix,
                 name = $"{CVRProps.CVRPrefix}OSCm_TrueBlend",
                 useAutomaticThresholds = false
             }; ;
