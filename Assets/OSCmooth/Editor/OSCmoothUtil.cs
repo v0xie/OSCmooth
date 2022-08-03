@@ -107,8 +107,10 @@ namespace OSCTools.OSCmooth.Util
             AnimationCurve _curve1 = new AnimationCurve(new Keyframe(0.0f, initThreshold));
             AnimationCurve _curve2 = new AnimationCurve(new Keyframe(0.0f, finalThreshold));
 
-            _animationClip1.SetCurve("", typeof(Animator), driveBase ? paramName : paramName + proxySuffix, _curve1);
-            _animationClip2.SetCurve("", typeof(Animator), driveBase ? paramName : paramName + proxySuffix, _curve2);
+            var pName = CVRProps.CVRPrefix +(driveBase ? paramName : paramName + proxySuffix);
+
+            _animationClip1.SetCurve("", typeof(Animator), pName, _curve1);
+            _animationClip2.SetCurve("", typeof(Animator), pName, _curve2);
 
             if (!Directory.Exists("Assets/OSCmooth/Generated/Anims/"))
             {
@@ -151,8 +153,8 @@ namespace OSCTools.OSCmooth.Util
 
         public static BlendTree CreateSmoothingBlendTree(AnimatorController animatorController, AnimatorStateMachine stateMachine, float smoothness, string paramName, bool driveBase, string smoothnessSuffix = "Smoother", string proxySuffix = "Proxy")
         {
-            AnimatorControllerParameter smootherParam = ParameterUtil.CheckAndCreateParameter(paramName + smoothnessSuffix, animatorController, AnimatorControllerParameterType.Float, smoothness);
-            ParameterUtil.CheckAndCreateParameter(paramName + proxySuffix, animatorController, AnimatorControllerParameterType.Float);
+            AnimatorControllerParameter smootherParam = ParameterUtil.CheckAndCreateParameter(CVRProps.CVRPrefix + paramName + smoothnessSuffix, animatorController, AnimatorControllerParameterType.Float, smoothness);
+            ParameterUtil.CheckAndCreateParameter(CVRProps.CVRPrefix + paramName + proxySuffix, animatorController, AnimatorControllerParameterType.Float);
             ParameterUtil.CheckAndCreateParameter(paramName, animatorController, AnimatorControllerParameterType.Float);
 
             // Creating 3 blend trees to create the feedback loop
@@ -161,7 +163,7 @@ namespace OSCTools.OSCmooth.Util
                 blendType = BlendTreeType.Simple1D,
                 hideFlags = HideFlags.HideInHierarchy,
                 blendParameter = paramName + smoothnessSuffix,
-                name = "OSCm_" + paramName + " Root",
+                name = CVRProps.CVRPrefix + "OSCm_" + paramName + " Root",
                 useAutomaticThresholds = false
             };
             BlendTree falseTree = new BlendTree
@@ -169,7 +171,7 @@ namespace OSCTools.OSCmooth.Util
                 blendType = BlendTreeType.Simple1D,
                 hideFlags = HideFlags.HideInHierarchy,
                 blendParameter = driveBase ? paramName + proxySuffix : paramName,
-                name = "OSCm_ProxyBlend",
+                name = $"{CVRProps.CVRPrefix}OSCm_ProxyBlend",
                 useAutomaticThresholds = false
             }; ;
             BlendTree trueTree = new BlendTree
@@ -177,7 +179,7 @@ namespace OSCTools.OSCmooth.Util
                 blendType = BlendTreeType.Simple1D,
                 hideFlags = HideFlags.HideInHierarchy,
                 blendParameter = driveBase ? paramName: paramName + proxySuffix,
-                name = "OSCm_TrueBlend",
+                name = $"{CVRProps.CVRPrefix}OSCm_TrueBlend",
                 useAutomaticThresholds = false
             }; ;
 

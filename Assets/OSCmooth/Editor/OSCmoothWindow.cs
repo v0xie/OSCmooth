@@ -11,6 +11,10 @@ using System.Linq;
 
 namespace OSCTools.OSCmooth
 {
+    public static class CVRProps
+    {
+        public readonly static string CVRPrefix = "#";
+    }
     public class OSCmoothWindow : EditorWindow
     {
         private VRCAvatarDescriptor _avDescriptor;
