@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using VRC.SDK3.Avatars.Components;
+//using VRC.SDK3.Avatars.Components;
 using OSCTools.OSCmooth.Animation;
 using OSCTools.OSCmooth.Types;
 using OSCTools.OSCmooth.Util;
@@ -17,7 +17,8 @@ namespace OSCTools.OSCmooth
     }
     public class OSCmoothWindow : EditorWindow
     {
-        private VRCAvatarDescriptor _avDescriptor;
+//        private VRCAvatarDescriptor _avDescriptor;
+        private AnimatorController _animatorControllerField;
         private AnimatorController _animatorController;
         private int _layerSelect = 4;
         private OSCmoothLayer _parameterAsset;
@@ -47,33 +48,45 @@ namespace OSCTools.OSCmooth
 
         private void OnGUI()
         {
-            _avDescriptor = (VRCAvatarDescriptor)EditorGUILayout.ObjectField
-            (
-                new GUIContent
-                (
-                    "Avatar",
-                    "The VRC Avatar that will have the smoothing animation layers set up on. " +
-                    "The Avatar must have a VRCAvatarDescriptor to show up in this field."
-                ),
-                _avDescriptor,
-                typeof(VRCAvatarDescriptor),
-                true
-            );
-
-            if (_avDescriptor != null)
-            {
-                _layerSelect = EditorGUILayout.Popup
+            _animatorControllerField = (AnimatorController)EditorGUILayout.ObjectField
                 (
                     new GUIContent
                     (
-                        "Layer",
-                        "This selects what VRChat Playable Layer you would like to set up " +
-                        "the following Binary Animation Layer into. A layer must be populated " +
-                        "in order for the tool to properly set up an Animation Layer."
+                        "Animator Controller",
+                        "The Animator Controller from which to apply smoothing to. "
                     ),
-                    _layerSelect,
-                    _animatorSelection
+                    _animatorController,
+                    typeof(AnimatorController),
+                    true
                 );
+
+//            _avDescriptor = (VRCAvatarDescriptor)EditorGUILayout.ObjectField
+//            (
+//                new GUIContent
+//                (
+//                    "Avatar",
+//                    "The VRC Avatar that will have the smoothing animation layers set up on. " +
+//                    "The Avatar must have a VRCAvatarDescriptor to show up in this field."
+//                ),
+//                _avDescriptor,
+//                typeof(VRCAvatarDescriptor),
+//                true
+//            );
+
+            if (_animatorControllerField != null)
+            {
+//                _layerSelect = EditorGUILayout.Popup
+//                (
+//                    new GUIContent
+//                    (
+//                        "Layer",
+//                        "This selects what VRChat Playable Layer you would like to set up " +
+//                        "the following Binary Animation Layer into. A layer must be populated " +
+//                        "in order for the tool to properly set up an Animation Layer."
+//                    ),
+//                    _layerSelect,
+//                    _animatorSelection
+//                );
 
                 EditorGUILayout.Space(10f);
 
@@ -118,7 +131,8 @@ namespace OSCTools.OSCmooth
 
                 EditorGUILayout.EndHorizontal();
 
-                _animatorController = AssetDatabase.LoadAssetAtPath<AnimatorController>(AssetDatabase.GetAssetPath(_avDescriptor.baseAnimationLayers[_layerSelect].animatorController));
+//                _animatorController = AssetDatabase.LoadAssetAtPath<AnimatorController>(AssetDatabase.GetAssetPath(_avDescriptor.baseAnimationLayers[_layerSelect].animatorController));
+                _animatorController = AssetDatabase.LoadAssetAtPath<AnimatorController>(AssetDatabase.GetAssetPath(_animatorControllerField));
 
                 if (_animatorController == null)
                 {
